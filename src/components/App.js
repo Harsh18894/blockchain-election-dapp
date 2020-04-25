@@ -3,6 +3,9 @@ import Web3 from 'web3'
 import Election from '../abis/Election.json'
 import './App.css'
 import Navbar from './Navbar'
+import Main from './Main'
+import MetamaskAlert from './MetamaskAlert'
+
 
 class App extends Component {
 
@@ -38,6 +41,10 @@ class App extends Component {
     if (networkData) {
       const election = web3.eth.Contract(Election.abi, networkData.address)
       this.setState({ election })
+
+      this.setState({ loading: false })
+    } else {
+      window.alert('Election Contract not deployed on the network')
     }
   }
 
@@ -46,12 +53,20 @@ class App extends Component {
     this.state = {
       account: '',
       election: null,
+      loading: true,
+      hasVoted: false,
       metamaskInstalled: false
     }
   }
 
 
   render() {
+    let content
+    if (this.state.loading) {
+      content = <div id="loader" className="text-center mt-5">Loading...</div>
+    } else {
+      content = <Main />
+    }
     return (
       <div>
         <Navbar account={this.state.account} />
@@ -59,7 +74,7 @@ class App extends Component {
           <div className="row">
             <main role="main" className="col-lg-12 d-flex text-center">
               <div className="content mr-auto ml-auto">
-
+                {this.state.metamaskInstalled ? content : <MetamaskAlert />}
               </div>
             </main>
           </div>
