@@ -52,7 +52,7 @@ contract("Election", (accounts) => {
     })
 
     describe('throws an exception for invalid candidates', async () => {
-
+        // This is test comment. Just for explaining purposes.
     })
 
     describe('throws an exception for double voting', async () => {
